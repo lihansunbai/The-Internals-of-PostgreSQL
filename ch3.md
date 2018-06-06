@@ -830,11 +830,11 @@ Sort  (cost=182.34..183.09 rows=300 width=8)
 
 尽管执行器使用存储器分配的work_men和temp_buffers进行查询处理，但如果仅在内存中执行处理，它将使用临时文件。
 
-使用ANALYZE选项，EXPLAIN命令实际上执行查询并显示真正的行数，真正的运行时间和实际的内存使用情况。 具体示例如下所示：
+使用ANALYZE选项，EXPLAIN命令实际上执行查询并显示实际的行数、运行时间和内存使用情况。 具体示例如下所示：
 
 ```sql
 testdb=# EXPLAIN ANALYZE SELECT id, data FROM tbl_25m ORDER BY id;
-QUERY PLAN                                                        
+						QUERY PLAN                                                        
 -------------------------------------------------------------------------------------------------------------------------- 
 Sort  (cost=3944070.01..3945895.01 rows=730000 width=4104) (actual time=885.648..1033.746 rows=730000 loops=1)   
 	Sort Key: id   
@@ -868,35 +868,35 @@ $ ls -la /usr/local/pgsql/data/base/pgsql_tmp*
 
 PostgreSQL支持三种join操作：nested loop join，merge join和hash join。 PostgreSQL中的nested loop join和merge join有几个变化。
 
-在下文中，我们假设读者熟悉这三个join的基本行为。 如果您不熟悉这些术语，请参阅[[1](http://www.interdb.jp/pg/pgsql03.html#_3.ref.1), [2](http://www.interdb.jp/pg/pgsql03.html#_3.ref.2)]。但是，对于PostgreSQL支持的hybrid hash join with skew，没有太多的解释，在这里将进行更详细的解释。
+在下文中，我们假设读者熟悉这三种连接的基本行为。 如果您不熟悉这些术语，请参阅[[1](http://www.interdb.jp/pg/pgsql03.html#_3.ref.1), [2](http://www.interdb.jp/pg/pgsql03.html#_3.ref.2)]。但是，对于PostgreSQL支持的hybrid hash join with skew，没有太多的解释，在这里将进行更详细的解释。
 
-请注意，PostgreSQL支持的三种join方法可以执行所有的join操作，不仅包括INNER JOIN，还包括LEFT/RIGHT OUTER JOIN，FULL OUTER JOIN等; 然而，为了简化，我们将重点放在本章的NATURAL INNER JOIN上。
+请注意，PostgreSQL支持的三种连接方法可以执行所有的连接操作，不仅包括INNER JOIN，还包括LEFT/RIGHT OUTER JOIN，FULL OUTER JOIN等; 然而，为了简化，我们将重点放在本章的NATURAL INNER JOIN上。
 
 ### 3.5.1. Nested Loop Join
 
-nested loop join是最基本的join操作，它可以用于任何join条件。 PostgreSQL支持nested loop join和它的五种变体。
+nested loop join是最基本的连接操作，它可以用于任何连接条件。 PostgreSQL支持nested loop join和它的五种变体。
 
 #### 3.5.1.1. Nested Loop Join
 
 nested loop join不需要任何启动操作; 从而，
 
-​	‘start-up cost’=0.‘start-up cost’=0.
+​	‘start-up cost’=0.
 
 nested loop join的运行成本与外表和内表的大小的乘积成比例; 即 ‘run cost’‘run cost’是O($N_{outer}$×$N_{inner}$)，其中$N_{outer}$ 和  $N_{inner}$分别是外表和内表的元组数。 更确切地说，它由以下等式定义：
 
-​	‘run cost’=(cpu_operator_cost+cpu_tuple_cost)×$N_{outer}$×$N_{inner}$+$C_{inner}$×$N_{outer}$+$C_{outer}$
+​	‘run cost’ = (cpu_operator_cost + cpu_tuple_cost) × $N_{outer}$ × $N_{inner}$ + $C_{inner}$ × $N_{outer}$ + $C_{outer}$
 
-s其中$C_{outer}$和$C_{inner}$分别是外表和内表的扫描成本。
+其中$C_{outer}$和$C_{inner}$分别是外表和内表的扫描成本。
 
 **图. 3.16. Nested loop join.**
 
 ![Fig. 3.16. Nested loop join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-16.png?raw=true)![img]()
 
-nested loop join的成本总是可以估计的，但这种join操作很少使用，因为通常使用下面描述的更有效的变体。
+nested loop join的成本总是可以估计的，但这种连接操作很少使用，因为通常使用下面描述的更有效的变体。
 
 #### 3.5.1.2. Materialized Nested Loop Join
 
-上面描述的The nested loop必须在读取外表的每个元组时扫描内表的所有元组。因为扫描每个外表元组的整个内表是一个昂贵的过程，PostgreSQL支持*materialized nested loop join*，以减少内表的总扫描成本。 
+上面描述的nested loop join必须在读取外表的每个元组时扫描内表的所有元组。因为扫描每个外表元组的整个内表是一个昂贵的过程，PostgreSQL支持*materialized nested loop join*，以减少内表的总扫描成本。 
 
 在运行nested loop join之前，执行器通过使用下面描述的临时元组存储(*temporary tuple storage*)模块扫描内表一次，将内表元组写入work_mem或临时文件。与使用缓冲区管理器相比，它有可能更有效地处理内表元组，特别是如果至少所有的元组都写到work_mem中。 
 
@@ -910,7 +910,7 @@ nested loop join的成本总是可以估计的，但这种join操作很少使用
 
 *临时元组存储 Temporary Tuple Storage*
 
-PostgreSQL内部提供了一个临时元组存储模块，用于实现表、在hybrid hash join中创建batch等等。  这个模块由[tuplestore.c](https://github.com/postgres/postgres/blob/master/src/backend/utils/sort/tuplestore.c)中定义的函数组成，它们存储并从work_mem或临时文件中读取一系列元组。 是否使用work_mem或临时文件取决于要存储的元组的总大小。
+PostgreSQL内部提供了一个临时元组存储模块，用于在hybrid hash join中创建batch等等。  这个模块由[tuplestore.c](https://github.com/postgres/postgres/blob/master/src/backend/utils/sort/tuplestore.c)中定义的函数组成，它们存储并从work_mem或临时文件中读取一系列元组。 是否使用work_mem或临时文件取决于要存储的元组的总大小。
 
 我们将探究执行器如何处理materialized nested loop join的计划树，以及如何使用下面显示的特定示例估算成本。
 
@@ -928,68 +928,66 @@ Nested Loop  (cost=0.00..750230.50 rows=5000 width=16)
 
 首先，给出了执行器的操作。执行器按以下方式处理显示的计划节点： 
 
-- **第7行**: 执行器通过顺序扫描materializes内表tbl_b(第8行)。
-- **第4行**: 执行器执行nested loop join操作; 外表是tbl_a，内表是materialized tbl_b。
+- **第7行**: 执行器通过顺序扫描物化的内表tbl_b(第8行)。
+- **第4行**: 执行器执行nested loop join操作; 外表是tbl_a，内表是物化的tbl_b。
 
-在下文中，估计‘Materialize’(第7行)和 ‘Nested Loop’(第4行)的成本。 假设materialized内部元组存储在work_mem中。
+在下文中，估计‘Materialize’(第7行)和 ‘Nested Loop’(第4行)的成本。 假设物化的内部元组存储在work_mem中。
 
 **Materialize:**
 
 没有启动成本；因此， 
 
-​	‘start-up cost’=0.
+​	‘start-up cost’ = 0.
 
 运行成本由以下公式定义： 
 
-​	‘run cost’=2×cpu_operator_cost×$N_{inner}$;
+​	‘run cost’ = 2 × cpu_operator_cost × $N_{inner}$;
 
 因此，
 
-​	‘run cost’=2×0.0025×5000=25.0.
+​	‘run cost’ = 2 × 0.0025 × 5000 = 25.0.
 
 另外，
 
-​	‘total cost’=(‘start-up cost’+‘total cost of seq scan’)+‘run cost’;
+​	‘total cost’ = (‘start-up cost’ + ‘total cost of seq scan’) + ‘run cost’;
 
 因此，
 
-​	‘total cost’=(0.0+73.0)+25.0=98.0.
+​	‘total cost’ = (0.0 + 73.0) + 25.0 = 98.0.
 
 **(Materialized) Nested Loop:**
 
 没有启动成本；因此，
 
-​	‘start-up cost’=0.
+​	‘start-up cost’ = 0.
 
 在估算运行成本之前，我们考虑*重新扫描成本(rescan cost)*。 该成本由以下等式定义：
 
-​	‘rescan cost’=cpu_operator_cost×$N_{inner}$.
+​	‘rescan cost’ = cpu_operator_cost × $N_{inner}$.
 
 在这种情况下，
 
-​	‘rescan cost’=(0.0025)×5000=12.5.
+​	‘rescan cost’ = (0.0025) × 5000 = 12.5.
 
 运行成本由以下等式定义：
 
-​	‘run cost’=(cpu_operator_cost+cpu_tuple_cost)×$N_{inner}$×$N_{outer}$
+​	‘run cost’ = (cpu_operator_cost + cpu_tuple_cost) × $N_{inner}$ × $N_{outer}$
 
-​			+‘rescan cost’×($N_{outer}$−1)+$C^{total}_{outer,seqscan}$+$C^{total}_{materialize}$,
+​			+ ‘rescan cost’ × ($N_{outer}$ − 1) + $C^{total}_{outer,seqscan}$ + $C^{total}_{materialize}$,
 
 其中$C^{total}_{outer,seqscan}$是外表的总扫描成本，$C^{total}_{materialize}$是materialized的总成本; 因此，
 
-​	‘run cost’=(0.0025+0.01)×5000×10000+12.5×(10000−1)+145.0+98.0=750230.5.
+​	‘run cost’ = (0.0025 + 0.01) × 5000 × 10000 + 12.5 × (10000 − 1) + 145.0 + 98.0 = 750230.5.
 
 #### 3.5.1.3. Indexed Nested Loop Join
 
-If there is an index of the inner table and this index can look up the tuples satisfying the join condition for matching each tuple of the outer table, the planner considers using this index for directly searching the inner table tuples instead of sequential scanning. This variation is called **indexed nested loop join**; refer to Fig. 3.18. Despite the fact that it referred to the indexed ‘nested loop join’, this algorithm can process on the basis of a single loop of the outer table; therefore, it can perform the join operation efficiently.
-
-如果存在内表的索引，并且该索引可以查找满足join条件的元组以匹配外表的每个元组，则优化器考虑使用该索引直接搜索内部元组而不是顺序扫描。 这种变化被称为**indexed nested loop join**; 参考图3.18。 尽管它提到了索引化的‘nested loop join’，但该算法可以基于外表的单个循环进行处理; 因此，它可以高效地执行join操作。
+如果存在内表的索引，并且该索引可以查找满足连接条件的元组以匹配外表的每个元组，则优化器考虑使用该索引直接搜索内部元组而不是顺序扫描。 这种变化被称为**indexed nested loop join**; 参考图3.18。尽管它提到了索引化的‘nested loop join’，但该算法可以基于外表的单个循环进行处理; 因此，它可以高效地执行连接操作。
 
 **图. 3.18. Indexed nested loop join.**
 
 ![Fig. 3.18. Indexed nested loop join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-18.png?raw=true)![img]()
 
-下面显示了the indexed nested loop join的具体示例。
+下面显示了indexed nested loop join的具体示例。
 
 ```sql
 testdb=# EXPLAIN SELECT * FROM tbl_c AS c, tbl_b AS b WHERE c.id = b.id;
@@ -1002,29 +1000,27 @@ Nested Loop  (cost=0.29..1935.50 rows=5000 width=16)
 (4 rows)
 ```
 
-In Line 6, the cost of accessing a tuple of the inner table is displayed. This is the cost of looking up the inner table if the tuple satisfies the index condition (id = b.id) shown in Line 7.
-
 在第6行中，显示访问内表的元组的成本。 如果元组满足第7行所示的索引条件(id = b.id)，这就是查找内表的成本。
 
-在第7行的索引条件(id = b.id)中，'b.id'是join连接条件中使用的外表格属性的值。 每当通过顺序扫描检索外表的元组时，第6行中的索引扫描路径查找要连接的内部元组。 换句话说，每当将外表的值作为参数传递时，此索引扫描路径将查找满足连接条件的内部元组。 这种索引路径称为**parameterized (index) path**。 详细信息在[README](https://github.com/postgres/postgres/blob/master/src/backend/optimizer/README)中介绍。
+在第7行的索引条件(id = b.id)中，'b.id'是连接条件中使用的外表属性的值。 每当通过顺序扫描检索外表的元组时，第6行中的索引扫描路径查找要连接的内部元组。 换句话说，每当将外表的值作为参数传递时，此索引扫描路径将查找满足连接条件的内部元组。 这种索引路径称为**parameterized (index) path**。 详细信息在[README](https://github.com/postgres/postgres/blob/master/src/backend/optimizer/README)中介绍。
 
 此nested loop join的启动成本等于第6行中索引扫描的成本; 从而，
 
-​	 ‘start-up cost’=0.285.
+​	 ‘start-up cost’ = 0.285.
 
 indexed nested loop join 的总成本由以下等式定义
 
-​	 ‘total cost’=(cpu_tuple_cost+$C^{total}_{inner,parameterized}$)×${N_{outer}}$+${C^{run}_{outer,seqscan}}$, 
+​	 ‘total cost’ = (cpu_tuple_cost + $C^{total}_{inner,parameterized}$) × ${N_{outer}}$ + ${C^{run}_{outer,seqscan}}$, 
 
 其中$C^{total}_{inner,parameterized}$是parameterized inner index scan的总成本。
 
 在这种情况下，
 
-​	 ‘total cost’=(0.01+0.3625)×5000+73.0=1935.5, 
+​	 ‘total cost’ = (0.01 + 0.3625) × 5000 + 73.0 = 1935.5, 
 
 运行成本是
 
-​	‘run cost’=1935.5−0.285=1935.215.
+​	‘run cost’ = 1935.5 − 0.285 = 1935.215.
 
 综上所述，indexed nested loop join的总成本为O(${N_{outer}}$)。
 
@@ -1046,7 +1042,7 @@ PostgreSQL支持带外部索引扫描的nested loop join的三种变体。参考
 
 merge join的开销由initial_cost_mergejoin()和final_cost_mergejoin()函数估算。
 
-由于确切的成本估算比较复杂，因此省略它仅显示merge join算法的运行时顺序。meger join 的启动成本是内表和外表的排序成本的总和; ($N_{outer}$$log_{2}$($N_{outer}$)+ $N_{inner}$$log_{2}$($N_{inner}$))，其中$N_{outer}$和$N_{inner}$分别是外表和内表的元组数 。 运行成本是O($N_{outer}$r +  $N_{inner}$)。
+由于确切的成本估算比较复杂，因此省略它仅显示merge join算法的运行时顺序。meger join 的启动成本是内表和外表的排序成本的总和; ($N_{outer}$$log_{2}$($N_{outer}$) + $N_{inner}$$log_{2}$($N_{inner}$))，其中$N_{outer}$和$N_{inner}$分别是外表和内表的元组数 。 运行成本是O($N_{outer}$r +  $N_{inner}$)。
 
 与nested loop join类似，PostgreSQL中的merge join有四种变体。
 
@@ -1054,15 +1050,13 @@ merge join的开销由initial_cost_mergejoin()和final_cost_mergejoin()函数估
 
 图 3.20 显示了merge join的概念图。
 
-图. 3.20. Merge join.
+**图. 3.20. Merge join.**
 
 ![Fig. 3.20. Merge join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-20.png?raw=true)![img]()
 
 如果所有元组都可以存储在内存中，则排序操作将能够在内存中执行; 否则，使用临时文件。
 
-下面显示了EXPLAIN命令的合并连接结果的一个具体示例。
-
-A specific example of the EXPLAIN command's result of the merge join is shown below.
+下面给出merge join 的EXPLAIN命令的结果的一个具体示例。
 
 merge join 的EXPLAIN命令结果如下。 
 
@@ -1094,7 +1088,7 @@ Merge Join  (cost=944.71..984.71 rows=1000 width=16)
 
 ![Fig. 3.21. Materialized merge join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-21.png?raw=true)![img]()
 
-materialized merge join示例如下。很容易发现，与上面的合并连接结果的不同之处在于第9行：‘Materialize’。
+materialized merge join示例如下。很容易发现，与上面的merge join结果的不同之处在于第9行：‘Materialize’。
 
 ```sql
 testdb=# EXPLAIN SELECT * FROM tbl_a AS a, tbl_b AS b WHERE a.id = b.id;
@@ -1229,7 +1223,7 @@ testdb=# SELECT * FROM customers AS c, purchase_history AS h WHERE c.name = h.cu
 
 在下文中，展示hybrid hash join with skew的工作机制。 参考图3.26至3.29。
 
-图. 3.26. hybrid hash join第一轮build阶段
+**图. 3.26. hybrid hash join第一轮build阶段**
 
 ![Fig. 3.26. The build phase of the hybrid hash join in the first round.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-26.png?raw=true)![img]()
 
@@ -1251,7 +1245,7 @@ testdb=# SELECT * FROM customers AS c, purchase_history AS h WHERE c.name = h.cu
 
 (4) 对内表的其余元组执行build操作。
 
-图 3.27. hybrid hash join第一轮probe阶段
+**图 3.27. hybrid hash join第一轮probe阶段**
 
 ![Fig. 3.27. The probe phase of the hybrid hash join in the first round.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-27.png?raw=true)![img]()
 
@@ -1271,7 +1265,7 @@ testdb=# SELECT * FROM customers AS c, purchase_history AS h WHERE c.name = h.cu
 
 (8) 从外表的其余元组中执行probe操作。 请注意，在该示例中，外表的元组中的70％已在第一轮中都经过skew处理。
 
-图. 3.28. 第二轮build和probe阶段
+**图. 3.28. 第二轮build和probe阶段**
 
 ![Fig. 3.28. The build and probe phases in the second round.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-28.png?raw=true)![img]()
 
@@ -1281,7 +1275,7 @@ testdb=# SELECT * FROM customers AS c, purchase_history AS h WHERE c.name = h.cu
 
 (11) 对存储在batch文件'batch_1_out'中的元组执行probe操作。
 
-图. 3.29. 第三轮和最后一轮build和probe阶段
+**图. 3.29. 第三轮和最后一轮build和probe阶段**
 
 ![Fig. 3.29. The build and probe phases in the third and the last rounds.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-29.png?raw=true)![img]()
 
@@ -1311,7 +1305,7 @@ nested loop join的访问路径是 [JoinPath](javascript:void(0)) 结构，其�
 
 ### 3.6.1. 预处理
 
-调用[planner.c](https://github.com/postgres/postgres/blob/master/src/backend/optimizer/plan/planner.c)中定义的subquery_planner() 函数进行预处理。 单表查询的预处理已在第3.3.1节中描述。 在本小节中，将描述多表查询的预处理; 然而，虽然相关内容很多，但只描述了一部分。
+调用[planner.c](https://github.com/postgres/postgres/blob/master/src/backend/optimizer/plan/planner.c)中定义的subquery_planner() 函数进行预处理。 单表查询的预处理已在第3.3.1节中描述。 在本小节中，将描述多表查询的预处理; 然而，虽然相关内容很多，但只介绍一部分。
 
 1. 计划和转换 CTE
 
@@ -1398,21 +1392,19 @@ testdb=# SELECT * FROM tbl_a AS a, tbl_b AS b WHERE a.id = b.id AND b.data < 400
 
 tbl_a的RelOptInfo有三条访问路径，它们被添加到RelOptInfo的pathlist中，并且链接到三个最低成本路径，即*cheapest start-up (cost) path*，*cheapest total (cost) path*和*cheapest parameterized (cost) path*。 由于最优启动和总成本路径是显而易见的，因此将描述cheapest parameterized index scan path的成本。
 
-如第3.5.1.3节所述，优化器考虑使用indexed nested loop join的parameterized path(并且很少将索引merge join与outer index scan一起使用)。 cheapest parameterized cost是估计parameterized path的最低成本。
+如第3.5.1.3节所述，优化器考虑使用indexed nested loop join的parameterized path(并且很少将indexed merge join与outer index scan一起使用)。 cheapest parameterized cost是估计parameterized path的最低成本。
 
 tbl_b的RelOptInfo只具有顺序扫描访问路径，因为tbl_b没有相关的索引。
 
 #### 3.6.2.2. Level 2 预处理
 
-在Level 2中，创建RelOptInfo结构并将其添加到PlannerInfo的join_rel_list中。 然后，估计所有可能的join路径的成本，并选择总成本最低的最优访问路径。 RelOptInfo将最优访问路径存储为最优总成本路径。 参考图3.33。
+在Level 2中，创建RelOptInfo结构并将其添加到PlannerInfo的join_rel_list中。 然后，估计所有可能的join路径的成本，并选择总成本最低的最优访问路径。RelOptInfo将最优访问路径存储为最优总成本路径。 参考图3.33。
 
 **图. 3.33. Level 2预处理后的PlannerInfo 和 RelOptInfo**
 
 ![Fig. 3.33. The PlannerInfo and RelOptInfo after processing in Level 2.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-33.png?raw=true)![img]()
 
-Table 3.1 shows all combinations of join access paths in this example. The query of this example is an equi-join type; therefore, all the three join methods are estimated. For convenience, some notations of access paths are introduced:
-
-表3.1展示这个示例中所有连接访问路径的组合。 示例的查询是一个equi-join类型; 因此，估计所有三种连接方法。 为了方便起见，引入了一些访问路径的名词：
+表3.1展示这个示例中所有连接访问路径的组合。示例的查询是一个equi-join类型; 因此，估计所有三种连接方法。 为了方便起见，引入了一些访问路径的名词：
 
 - *SeqScanPath(table)* 表示表的顺序扫描路径。
 - *Materialized->SeqScanPath(table)* 表示表的物化顺序扫描路径。
@@ -1441,13 +1433,9 @@ Table 3.1 shows all combinations of join access paths in this example. The query
 
 例如，在nested loop join中，估计七条连接路径。 第一个表示外路径和内路径分别是tbl_a和tbl_b的顺序扫描路径; 第二个表示外路径是tbl_a的顺序扫描路径，而内路径是tbl_b的物化顺序扫描路径; 等等。
 
-The planner finally selects the cheapest access path from the estimated join paths, and the cheapest path is added to the pathlist of the RelOptInfo {tbl_a,tbl_b}. Refer to Fig. 3.33.
-
 优化器最终从估计的连接路径中选择最优访问路径，并将最优路径添加到RelOptInfo {tbl_a，tbl_b}的pathlist中。 参考图3.33。
 
-In this example, as shown in the result of EXPLAIN below, the planner selects the hash join whose inner and outer tables are tbl_b and tbl_c.
-
-在这个例子中，如下面EXPLAIN的结果所示，优化器选择内表和外表为tbl_b和tbl_c的散列连接。
+在这个例子中，如下面EXPLAIN的结果所示，优化器选择内表和外表为tbl_b和tbl_c的hash join。
 
 ```sql
 testdb=# EXPLAIN  SELECT * FROM tbl_b AS b, tbl_c AS c WHERE c.id = b.id AND b.data < 400;
