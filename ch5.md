@@ -2,7 +2,7 @@
 
 当数据库中同时运行多个事务时，并发控制是维护一致性和隔离性的一种机制。
 
-有三种主要的并发控制技术，即 *Multi-version Concurrency Control* (MVCC), *Strict Two-Phase Locking* (S2PL), 和 *Optimistic Concurrency Control* (OCC)，每种技术都有很多变化。 在MVCC中，每个写操作都会创建新版本的数据项，同时保留旧版本。 当事务读取数据项时，系统会选择其中一个版本来确保单个事务的隔离。 MVCC的主要优势在于”读不会阻塞写，而写也从不阻塞读“，相反，例如，基于S2PL的系统当有写操作时必须阻塞读，因为写操作获得了独占锁。 PostgreSQL和一些RDBMS使用称为 **快照隔离 Snapshot Isolation (SI)** 的MVCC变体。
+有三种主要的并发控制技术，即 *Multi-version Concurrency Control* (MVCC), *Strict Two-Phase Locking* (S2PL) 和 *Optimistic Concurrency Control* (OCC)，每种技术都有很多变化。 在MVCC中，每个写操作都会创建新版本的数据项，同时保留旧版本。 当事务读取数据项时，系统会选择其中一个版本来确保单个事务的隔离。 MVCC的主要优势在于”读不会阻塞写，而写也从不阻塞读“，相反，例如，基于S2PL的系统当有写操作时必须阻塞读，因为写操作获得了独占锁。 PostgreSQL和一些RDBMS使用称为 **快照隔离 Snapshot Isolation (SI)** 的MVCC变体。
 
 为了实现SI，一些RDBMS(例如Oracle)使用回滚段(rollback segments)。 当写入新的数据项时，旧版本的项目被写入回滚段，随后新项被覆盖到数据区域。 PostgreSQL使用更简单的方法。 一个新的数据项被直接插入相关表页。 读取数据时，PostgreSQL通过**可见性检查规则(visibility check rules)**来选择项的适当版本以响应单个事务。
 
