@@ -8,7 +8,7 @@
 
 - 作者： [Hironobu SUZUKI](http://www.interdb.jp/)
 - 原书名称：[《The Internals of PostgreSQL》](http://www.interdb.jp/pg/index.html)
-- 译者：[杨杰](https://yonj1e.github.io/about/) （[yonj1e@163.com](mailto:yonj1e@163.com) ）
+- 译者：[杨杰](https://yonj1e.github.io/young/) （[yonj1e@163.com](mailto:yonj1e@163.com) ）
 
 ## 法律声明
 
