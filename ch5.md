@@ -222,7 +222,7 @@ dead tuple 最终应该从page页中删除。 清理 dead tuple 被称为**VACUU
 
   t_ctid 设置为 (0,3).
 
-与删除操作一样，如果提交txid 100，则Tuple_1和Tuple_2将为无效元组，并且如果txid 100被中止，则Tuple_2和Tuple_3将为无效元组。
+与删除操作一样，如果提交txid 100，则Tuple_1和Tuple_2将为dead tuple，并且如果txid 100被中止，则Tuple_2和Tuple_3将为dead tuple。
 
 ### 5.3.4. 空闲空间映射表(Free Space Map)
 
@@ -938,7 +938,7 @@ CheckTargetForConflictsIn创建rw-confict C1，这是Tx_B和Tx_A之间Pkey_1和T
 
 PostgreSQL的并发控制机制需要以下过程维护。
 
-1. 删除死元组和指向对应的死元组的索引元组。 
+1. 删除dead tuple和指向对应的dead tuple的索引元组。 
 2. 删除clog不必要的部分。 
 3. 冻结旧txid。 
 4. 更新FSM、VM和统计信息。 
