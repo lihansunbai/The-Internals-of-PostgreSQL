@@ -44,7 +44,7 @@ PostgreSQL支持两个有趣的技术和实用的特性，即[外部数据包(Fo
 
 **图. 3.1. 查询处理**
 
-![Fig. 3.1. Query Processing.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-01.png?raw=true)![img]()
+![Fig. 3.1. Query Processing.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-01.png?raw=true)
 
 在本节中，提供了这些子系统的概述。 由于优化器和执行器非常复杂，下面将对这些功能进行详细说明。
 
@@ -66,7 +66,7 @@ testdb=# SELECT id, data FROM tbl_a WHERE id < 300 ORDER BY data;
 
 **图. 3.2. 解析树示例**
 
-![Fig. 3.2. An example of a parse tree.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-02.png?raw=true)![img]()
+![Fig. 3.2. An example of a parse tree.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-02.png?raw=true)
 
 SELECT查询的元素和解析树的相应元素的编号相同。 例如，(1)是第一个目标列表中的一项，它是表的'id'列，(4)是WHERE子句，等等。
 
@@ -84,7 +84,7 @@ SELECT查询的元素和解析树的相应元素的编号相同。 例如，(1)�
 
 **图. 3.3. 查询树示例**
 
-![Fig. 3.3. An example of a query tree.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-03.png?raw=true)![img]()
+![Fig. 3.3. An example of a query tree.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-03.png?raw=true)
 
 上面的查询树简要描述如下。
 
@@ -119,7 +119,7 @@ sampledb=# SELECT * FROM employees_list;
 
 **图. 3.4. 重写示例**
 
-![Fig. 3.4. An example of the rewriter stage.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-04.png?raw=true)![img]()
+![Fig. 3.4. An example of the rewriter stage.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-04.png?raw=true)
 
 由于PostgreSQL使用这种机制来实现视图，在9.2版本之前视图无法更新。 但是，从9.3版本开始视图可以更新; 尽管如此，更新视图有很多限制。这些细节在[官方文档](https://www.postgresql.org/docs/current/static/sql-createview.html#SQL-CREATEVIEW-UPDATABLE-VIEWS)中作了说明。 
 
@@ -147,7 +147,7 @@ Sort  (cost=182.34..183.09 rows=300 width=8)
 
 这个结果显示了图3.5所示的计划树。
 
-**图. 3.5. 计划树示例，计划树与EXPLAIN命令的结果之间的关系**![Fig. 3.5. A simple plan tree and the relationship between the plan tree and the result of the EXPLAIN command.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-05.png?raw=true)![img]()
+**图. 3.5. 计划树示例，计划树与EXPLAIN命令的结果之间的关系**![Fig. 3.5. A simple plan tree and the relationship between the plan tree and the result of the EXPLAIN command.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-05.png?raw=true)
 
 计划树由称为 *计划节点(plan nodes)* 的元素组成，并连接到 *PlannedStmt* 结构的 Plantree 列表。 这些元素在 [plannodes.h](https://github.com/postgres/postgres/blob/master/src/include/nodes/plannodes.h) 中定义。 细节将在第3.3.3节(和第3.5.4.2节)中描述。 
 
@@ -161,7 +161,7 @@ Sort  (cost=182.34..183.09 rows=300 width=8)
 
 **图. 3.6. 执行器，缓冲区管理者和临时文件之间的关系**
 
-![Fig. 3.6. The relationship among the executor, buffer manager and temporary files.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-06.png?raw=true)![img]()
+![Fig. 3.6. The relationship among the executor, buffer manager and temporary files.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-06.png?raw=true)
 
  
 
@@ -394,7 +394,7 @@ testdb=# SELECT histogram_bounds FROM pg_stats WHERE tablename = 'tbl' AND attna
 
 **图. 3.7. Buckets and histogram_bounds.**
 
-![Fig. 3.7. Buckets and histogram_bounds.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-07.png?raw=true)![img]()
+![Fig. 3.7. Buckets and histogram_bounds.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-07.png?raw=true)
 
 接下来，将使用本小节中的示例计算selectivity。 查询有一个WHERE子句'data <240'，值'240'在第二个桶中。 在这种情况下，selectivity可以通过linear interpolation得出; 因此，使用以下等式来计算该查询中列'数据'的selectivity：
 
@@ -508,7 +508,7 @@ testdb=# SELECT * FROM tbl_corr WHERE col_rand BETWEEN 2 AND 4;
 
 **图. 3.8. 索引相关性**
 
-![Fig. 3.8. Index correlation.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-08.png?raw=true)![img]()
+![Fig. 3.8. Index correlation.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-08.png?raw=true)
 
  
 
@@ -625,7 +625,7 @@ PostgreSQL中的优化器执行三个步骤，如下所示：
 
 **图. 3.9. 展开AND/OR表达式示例**
 
-![Fig. 3.9. An example of flattening AND/OR expressions.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-09.png?raw=true)![img]()
+![Fig. 3.9. An example of flattening AND/OR expressions.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-09.png?raw=true)
 
 ### 3.3.2. 获取最优访问路径
 
@@ -668,7 +668,7 @@ testdb=# SELECT * FROM tbl_1 WHERE id < 300 ORDER BY data;
 
 **图. 3.10. 如何获得示例1的最优路径**
 
-![Fig. 3.10. How to get the cheapest path of Example 1.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-10.png?raw=true)![img]()
+![Fig. 3.10. How to get the cheapest path of Example 1.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-10.png?raw=true)
 
 1. 创建一个RelOptInfo结构并将其存储在PlannerInfo的simple_rel_array中。
 
@@ -688,7 +688,7 @@ testdb=# SELECT * FROM tbl_1 WHERE id < 300 ORDER BY data;
 
 **图. 3.11. 如何获得示例1的最优路径(从图3.10继续)**
 
-![Fig. 3.11. How to get the cheapest path of Example 1 (continued from Fig. 3.10).](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-11.png?raw=true)![img]()
+![Fig. 3.11. How to get the cheapest path of Example 1 (continued from Fig. 3.10).](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-11.png?raw=true)
 
 5. 创建一个新的RelOptInfo结构来处理ORDER BY过程。
 
@@ -732,11 +732,11 @@ testdb=# SELECT * FROM tbl_2 WHERE id < 240;
 
 **图. 3.12. 示例2中如何获得最优路径**
 
-![Fig. 3.12. How to get the cheapest path of Example 2.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-12.png?raw=true)![img]()
+![Fig. 3.12. How to get the cheapest path of Example 2.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-12.png?raw=true)
 
 **图. 3.13. 示例2中如何获得最优路径(从图3.12继续)**
 
-![Fig. 3.13. How to get the cheapest path of Example 2 (continued from Fig. 3.12).](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-13.png?raw=true)![img]()
+![Fig. 3.13. How to get the cheapest path of Example 2 (continued from Fig. 3.12).](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-13.png?raw=true)
 
 4. 创建 [IndexPath](javascript:void(0))，估算索引扫描的成本，并使用add_path()函数将IndexPath添加到RelOptInfo的pathlist中。
 
@@ -761,7 +761,7 @@ testdb=# SELECT * FROM tbl_2 WHERE id < 240;
 
 **图. 3.14. 示例2中如何获取最优路径(从图3.13继续)**
 
-![Fig. 3.14. How to get the cheapest path of Example 2 (continued from Fig. 3.13).](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-14.png?raw=true)![img]()
+![Fig. 3.14. How to get the cheapest path of Example 2 (continued from Fig. 3.13).](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-14.png?raw=true)
 
 ### 3.3.3. 创建一个计划树
 
@@ -790,7 +790,7 @@ testdb=# SELECT * FROM tbl_2 WHERE id < 240;
 
 **图. 3.15. 计划树示例**
 
-![Fig. 3.15. Examples of plan trees.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-15.png?raw=true)![img]()
+![Fig. 3.15. Examples of plan trees.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-15.png?raw=true)
 
 在SortNode中，lefttree指向SeqScanNode。 
 
@@ -890,7 +890,7 @@ nested loop join的运行成本与外表和内表的大小的乘积成比例; �
 
 **图. 3.16. Nested loop join.**
 
-![Fig. 3.16. Nested loop join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-16.png?raw=true)![img]()
+![Fig. 3.16. Nested loop join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-16.png?raw=true)
 
 nested loop join的成本总是可以估计的，但这种连接操作很少使用，因为通常使用下面描述的更有效的变体。
 
@@ -904,7 +904,7 @@ nested loop join的成本总是可以估计的，但这种连接操作很少使�
 
 **图. 3.17. Materialized nested loop join.**
 
-![Fig. 3.17. Materialized nested loop join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-17.png?raw=true)![img]()
+![Fig. 3.17. Materialized nested loop join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-17.png?raw=true)
 
  
 
@@ -985,7 +985,7 @@ Nested Loop  (cost=0.00..750230.50 rows=5000 width=16)
 
 **图. 3.18. Indexed nested loop join.**
 
-![Fig. 3.18. Indexed nested loop join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-18.png?raw=true)![img]()
+![Fig. 3.18. Indexed nested loop join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-18.png?raw=true)
 
 下面显示了indexed nested loop join的具体示例。
 
@@ -1032,7 +1032,7 @@ PostgreSQL支持带外部索引扫描的nested loop join的三种变体。参考
 
 **图. 3.19. nested loop join的三种变体与外部索引扫描**
 
-![Fig. 3.19. The three variations of the nested loop join with an outer index scan.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-19.png?raw=true)![img]()
+![Fig. 3.19. The three variations of the nested loop join with an outer index scan.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-19.png?raw=true)
 
 [这里](javascript:void(0)) 展示这些join的EXPLAIN结果
 
@@ -1052,7 +1052,7 @@ merge join的开销由initial_cost_mergejoin()和final_cost_mergejoin()函数估
 
 **图. 3.20. Merge join.**
 
-![Fig. 3.20. Merge join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-20.png?raw=true)![img]()
+![Fig. 3.20. Merge join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-20.png?raw=true)
 
 如果所有元组都可以存储在内存中，则排序操作将能够在内存中执行; 否则，使用临时文件。
 
@@ -1086,7 +1086,7 @@ Merge Join  (cost=944.71..984.71 rows=1000 width=16)
 
 **图. 3.21. Materialized merge join.**
 
-![Fig. 3.21. Materialized merge join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-21.png?raw=true)![img]()
+![Fig. 3.21. Materialized merge join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-21.png?raw=true)
 
 materialized merge join示例如下。很容易发现，与上面的merge join结果的不同之处在于第9行：‘Materialize’。
 
@@ -1117,7 +1117,7 @@ Merge Join  (cost=10466.08..10578.58 rows=5000 width=2064)
 
 图. 3.22. merge join的三个变体与外部索引扫描 
 
-![Fig. 3.22. The three variations of the merge join with an outer index scan.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-22.png?raw=true)![img]()
+![Fig. 3.22. The three variations of the merge join with an outer index scan.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-22.png?raw=true)
 
 [这里](javascript:void(0)) 展示这些join的EXPLAIN结果
 
@@ -1149,7 +1149,7 @@ testdb=# SELECT * FROM tbl_outer AS outer, tbl_inner AS inner WHERE inner.attr1 
 
 **图. 3.23. in-memory hash join的build阶段**
 
-![Fig. 3.23. The build phase in the in-memory hash join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-23.png?raw=true)![img]()
+![Fig. 3.23. The build phase in the in-memory hash join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-23.png?raw=true)
 
 (1) 在work_mem上创建一个batch。
 
@@ -1173,7 +1173,7 @@ testdb=# SELECT * FROM tbl_outer AS outer, tbl_inner AS inner WHERE inner.attr1 
 
 **图. 3.24. in-memory hash join的probe阶段**
 
-![Fig. 3.24. The probe phase in the in-memory hash join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-24.png?raw=true)![img]()
+![Fig. 3.24. The probe phase in the in-memory hash join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-24.png?raw=true)
 
 (4) Probe外表的第一个元组
 
@@ -1205,7 +1205,7 @@ testdb=# SELECT * FROM tbl_outer AS outer, tbl_inner AS inner WHERE inner.attr1 
 
 **图. 3.25. hybrid hash join中多个batch**
 
-![Fig. 3.25. Multiple batches in hybrid hash join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-25.png?raw=true)![img]()
+![Fig. 3.25. Multiple batches in hybrid hash join.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-25.png?raw=true)
 
 在hybrid hash join中，build和probe阶段的执行次数与batch数相同，因为内表和外表存储在相同数量的batch中。在第一轮build和probe阶段，不仅创建了每个batch，而且还处理了第一批内表和外表。另一方面，第二轮和后续各轮的处理需要写入临时文件并从临时文件中重新加载 ，所以这些过程成本很高。因此，PostgreSQL还准备了一个名为**skew**的特殊batch，以便在第一轮中更高效地处理许多元组。
 
@@ -1225,7 +1225,7 @@ testdb=# SELECT * FROM customers AS c, purchase_history AS h WHERE c.name = h.cu
 
 **图. 3.26. hybrid hash join第一轮build阶段**
 
-![Fig. 3.26. The build phase of the hybrid hash join in the first round.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-26.png?raw=true)![img]()
+![Fig. 3.26. The build phase of the hybrid hash join in the first round.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-26.png?raw=true)
 
 (1) 在work_mem上创建一个batch和一个skew batch。
 
@@ -1247,7 +1247,7 @@ testdb=# SELECT * FROM customers AS c, purchase_history AS h WHERE c.name = h.cu
 
 **图 3.27. hybrid hash join第一轮probe阶段**
 
-![Fig. 3.27. The probe phase of the hybrid hash join in the first round.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-27.png?raw=true)![img]()
+![Fig. 3.27. The probe phase of the hybrid hash join in the first round.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-27.png?raw=true)
 
 (5) 创建用于存储外表元组的临时batch文件。
 
@@ -1267,7 +1267,7 @@ testdb=# SELECT * FROM customers AS c, purchase_history AS h WHERE c.name = h.cu
 
 **图. 3.28. 第二轮build和probe阶段**
 
-![Fig. 3.28. The build and probe phases in the second round.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-28.png?raw=true)![img]()
+![Fig. 3.28. The build and probe phases in the second round.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-28.png?raw=true)
 
 (9) 删除skew batch并清除Batch_0以准备第二轮。
 
@@ -1277,7 +1277,7 @@ testdb=# SELECT * FROM customers AS c, purchase_history AS h WHERE c.name = h.cu
 
 **图. 3.29. 第三轮和最后一轮build和probe阶段**
 
-![Fig. 3.29. The build and probe phases in the third and the last rounds.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-29.png?raw=true)![img]()
+![Fig. 3.29. The build and probe phases in the third and the last rounds.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-29.png?raw=true)
 
 (12) 使用batch文件'batch_2_in'和'batch_2_out'执行build和probe操作。
 
@@ -1293,7 +1293,7 @@ nested loop join的访问路径是 [JoinPath](javascript:void(0)) 结构，其�
 
 **图. 3.30. 连接访问路径**
 
-![Fig. 3.30. Join access paths.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-30.png?raw=true)![img]()
+![Fig. 3.30. Join access paths.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-30.png?raw=true)
 
 #### 3.5.4.2. Join Nodes
 
@@ -1358,7 +1358,7 @@ testdb=# SELECT * FROM tbl_a AS a, tbl_b as b WHERE a.id = b.id;
 
 **图. 3.31. 使用动态规划获得最优访问路径**
 
-![Fig. 3.31. How to get the cheapest access path using dynamic programming.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-31.png?raw=true)![img]()
+![Fig. 3.31. How to get the cheapest access path using dynamic programming.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-31.png?raw=true)
 
 在下文中，描述优化器获取以下查询的最优计划的过程。
 
@@ -1388,7 +1388,7 @@ testdb=# SELECT * FROM tbl_a AS a, tbl_b AS b WHERE a.id = b.id AND b.data < 400
 
 **图. 3.32. Level 1预处理后的PlannerInfo 和 RelOptInfo**
 
-![Fig. 3.32. The PlannerInfo and RelOptInfo after processing in Level 1.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-32.png?raw=true)![img]()
+![Fig. 3.32. The PlannerInfo and RelOptInfo after processing in Level 1.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-32.png?raw=true)
 
 tbl_a的RelOptInfo有三条访问路径，它们被添加到RelOptInfo的pathlist中，并且链接到三个最低成本路径，即*cheapest start-up (cost) path*，*cheapest total (cost) path*和*cheapest parameterized (cost) path*。 由于最优启动和总成本路径是显而易见的，因此将描述cheapest parameterized index scan path的成本。
 
@@ -1402,7 +1402,7 @@ tbl_b的RelOptInfo只具有顺序扫描访问路径，因为tbl_b没有相关的
 
 **图. 3.33. Level 2预处理后的PlannerInfo 和 RelOptInfo**
 
-![Fig. 3.33. The PlannerInfo and RelOptInfo after processing in Level 2.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-33.png?raw=true)![img]()
+![Fig. 3.33. The PlannerInfo and RelOptInfo after processing in Level 2.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-33.png?raw=true)
 
 表3.1展示这个示例中所有连接访问路径的组合。示例的查询是一个equi-join类型; 因此，估计所有三种连接方法。 为了方便起见，引入了一些访问路径的名词：
 
@@ -1504,7 +1504,7 @@ testdb-#                WHERE a.id = b.id AND b.id = c.id AND a.data < 40;
 
 下面显示了该查询的EXPLAIN命令的结果：
 
-![img](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-34.png?raw=true)![img]()
+![img](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch3/fig-3-34.png?raw=true)
 
 最外层的连接是indexed nested loop join(第5行)；inner parameterized index scan显示在第13行中，第7-12行是hash join的结果，其内表和外表分别是tbl_b和tbl_a。因此，执行器首先执行tbl_a和tbl_b的hash join，然后执行indexed nested loop join。 
 

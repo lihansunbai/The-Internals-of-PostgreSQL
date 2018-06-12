@@ -18,7 +18,7 @@ PostgreSQL是一个具有多进程体系结构的客户机/服务器类型的关
 
 **图. 2.1. PostgreSQL进程体系结构**
 
-![Fig. 2.1. An example of the process architecture in PostgreSQL.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch2/fig-2-01.png?raw=true)![img]()
+![Fig. 2.1. An example of the process architecture in PostgreSQL.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch2/fig-2-01.png?raw=true)
 
 ------
 

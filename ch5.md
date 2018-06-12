@@ -1,4 +1,4 @@
-第五章 并发控制
+## 第五章 并发控制
 
 当数据库中同时运行多个事务时，并发控制是维护一致性和隔离性的一种机制。
 
@@ -77,7 +77,7 @@ txid可以相互比较。 例如，从txid 100的角度看，大于100的txid表
 
 **图 5.1. PostgreSQL中事务ID示例**
 
-![Fig. 5.1. Transaction ids in PostgreSQL.](http://www.interdb.jp/pg/img/fig-5-01.png)![img]()
+![Fig. 5.1. Transaction ids in PostgreSQL.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-01.png?raw=true)
 
 由于txid空间在实际系统中是不够的，PostgreSQL将txid空间视为一个圆。之前的21亿txid是“过去的”，之后的21亿txid是“将来的”(图5.1 b)。 
 
@@ -95,7 +95,7 @@ txid可以相互比较。 例如，从txid 100的角度看，大于100的txid表
 
 **图. 5.2. Tuple 结构**
 
-![Fig. 5.2. Tuple structure.](http://www.interdb.jp/pg/img/fig-5-02.png)![img]()
+![Fig. 5.2. Tuple structure.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-02.png?raw=true)
 
 HeapTupleHeaderData 结构在 [src/include/access/htup_details.h](https://github.com/postgres/postgres/blob/ee943004466418595363d567f18c053bae407792/src/include/access/htup_details.h) 中定义。
 
@@ -114,7 +114,7 @@ HeapTupleHeaderData 结构在 [src/include/access/htup_details.h](https://github
 
 **图. 5.3. tuple示例**
 
-![Fig. 5.3. Representation of tuples.](http://www.interdb.jp/pg/img/fig-5-03.png)![img]()
+![Fig. 5.3. Representation of tuples.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-03.png?raw=true)
 
 ### 5.3.1. 插入
 
@@ -122,7 +122,7 @@ HeapTupleHeaderData 结构在 [src/include/access/htup_details.h](https://github
 
 **图 5.4. 插入tuple**
 
-![Fig. 5.4. Tuple insertion.](http://www.interdb.jp/pg/img/fig-5-04.png)![img]()
+![Fig. 5.4. Tuple insertion.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-04.png?raw=true)
 
 假设一个元组通过txid为99的事务插入到一个页面中。在这种情况下，插入元组的header设置如下。
 
@@ -165,7 +165,7 @@ testdb=# SELECT lp as tuple, t_xmin, t_xmax, t_field3 as t_cid, t_ctid
 
 **图. 5.5. 删除tuple**
 
-![Fig. 5.5. Tuple deletion.](http://www.interdb.jp/pg/img/fig-5-05.png)![img]()
+![Fig. 5.5. Tuple deletion.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-05.png?raw=true)
 
 假设Tuple_1被txid 111删除。在这种情况下，Tuple_1的header被设置如下。
 
@@ -182,7 +182,7 @@ dead tuple 最终应该从page页中删除。 清理 dead tuple 被称为**VACUU
 
 **图. 5.6. 更新行两次**
 
-![Fig. 5.6. Update the row twice.](http://www.interdb.jp/pg/img/fig-5-06.png)![img]()
+![Fig. 5.6. Update the row twice.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-06.png?raw=true)
 
 假设由txid 99插入的行由txid 100更新两次。
 
@@ -279,7 +279,7 @@ clog 在共享内存中是一个或多个8 KB page页。clog逻辑上是一个�
 
 **图. 5.7. clog如何执行**
 
-![Fig. 5.7. How the clog operates.](http://www.interdb.jp/pg/img/fig-5-07.png)![img]()
+![Fig. 5.7. How the clog operates.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-07.png?raw=true)
 
 ------
 
@@ -338,7 +338,7 @@ txid_current_snapshot的文本表示形式为“xmin：xmax：xip_list“，这�
 
 **图. 5.8. 事务快照示例**
 
-![Fig. 5.8. Examples of transaction snapshot representation.](http://www.interdb.jp/pg/img/fig-5-08.png)
+![Fig. 5.8. Examples of transaction snapshot representation.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-08.png?raw=true)
 
 第一个例子是'100'。 该快照意味着以下内容(图5.8(a))：
 
@@ -359,7 +359,7 @@ txid_current_snapshot的文本表示形式为“xmin：xmax：xip_list“，这�
 
 **图. 5.9. 事务管理器和事务**
 
-![Fig. 5.9. Transaction manager and transactions.](http://www.interdb.jp/pg/img/fig-5-09.png)![img]()
+![Fig. 5.9. Transaction manager and transactions.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-09.png?raw=true)
 
 事务管理器始终保存有关当前正在运行的事务的信息。假设三个事务一个接一个地启动，并且Transaction_A和Transaction_B的隔离级别是READ COMMITTED，而Transaction_C的隔离级别是REPEATABLE READ。 
 
@@ -497,7 +497,7 @@ Rule 6很明显，因为t_xmax是INVALID或ABORTED。下面描述了三种例外
 
 **图 5.10. 可见性检查情景示例**
 
-![Fig. 5.10. Scenario to describe visibility check.](http://www.interdb.jp/pg/img/fig-5-10.png)![img]()
+![Fig. 5.10. Scenario to describe visibility check.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-10.png?raw=true)
 
 在图5.10所示的场景中，SQL命令按以下时间顺序执行。
 
@@ -699,7 +699,7 @@ testdb=# SELECT * FROM tbl;
 
 **图5.11 ExecUpdate中三个内部块**
 
-![Fig. 5.11. Three internal blocks in ExecUpdate.](http://www.interdb.jp/pg/img/fig-5-11.png)![img]()
+![Fig. 5.11. Three internal blocks in ExecUpdate.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-11.png?raw=true)
 
 [1] 目标航正在被更新 (图. 5.11[1])
 
@@ -778,7 +778,7 @@ Tx_B(REPEATABLE READ)尝试更新已由Tx_A更新提交的目标行。 在这种
 
 **图. 5.12. Write-Skew 时间表和他的优先图**
 
-![Fig. 5.12. Write-Skew schedule and its precedence graph.](http://www.interdb.jp/pg/img/fig-5-12.png)![img]()
+![Fig. 5.12. Write-Skew schedule and its precedence graph.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-12.png?raw=true)
 
 从概念上讲，有三种类型的冲突：wr-conflicts (脏读Dirty Reads), ww-conflicts (丢失更新Lost Updates), 和 rw-conflicts。 但是，wr- conficts和ww-conflicts并不需要考虑，因为如前面的章节所示，PostgreSQL可以防止这种冲突。 因此，PostgreSQL中的SSI实现只需要考虑rw-conflicts。
 
@@ -836,13 +836,13 @@ testdb=# ANALYZE tbl;
 
 **图. 5.13. Write-Skew scenario.**
 
-![Fig. 5.13. Write-Skew scenario.](http://www.interdb.jp/pg/img/fig-5-13.png)![img]()
+![Fig. 5.13. Write-Skew scenario.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-13.png?raw=true)
 
 假设所有的命令都使用索引扫描。 因此，执行这些命令时，它们将读取堆元组和索引页，其中每个元组都包含指向相应堆元组的索引元组。 见图5.14。
 
 **图. 5.14. 图5.13所示场景中索引与表之间的关系**
 
-![Fig. 5.14. Relationship between the index and table in the scenario shown in Fig. 5.13.](http://www.interdb.jp/pg/img/fig-5-14.png)![img]()
+![Fig. 5.14. Relationship between the index and table in the scenario shown in Fig. 5.13.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-14.png?raw=true)
 
 **T1**：Tx_A执行SELECT命令。 该命令读取一个堆元组(Tuple_2000)和一个主键(Pkey_2)。
 
@@ -860,7 +860,7 @@ testdb=# ANALYZE tbl;
 
 **图5.15. SIREAD锁和rw-conflicts，以及图5.13中所示场景的时间表**
 
-![Fig. 5.15. SIREAD locks and rw-conflicts, and schedule of the scenario shown in Fig. 5.13.](http://www.interdb.jp/pg/img/fig-5-15.png)![img]()
+![Fig. 5.15. SIREAD locks and rw-conflicts, and schedule of the scenario shown in Fig. 5.13.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-15.png?raw=true)
 
 **T1**：
 
@@ -902,7 +902,7 @@ CheckTargetForConflictsIn创建rw-confict C1，这是Tx_B和Tx_A之间Pkey_1和T
 
 **图. 5.16. 其他 Write-Skew 场景**
 
-![Fig. 5.16. Other Write-Skew scenarios.](http://www.interdb.jp/pg/img/fig-5-16.png)![img]()
+![Fig. 5.16. Other Write-Skew scenarios.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-16.png?raw=true)
 
  
 
@@ -918,19 +918,19 @@ CheckTargetForConflictsIn创建rw-confict C1，这是Tx_B和Tx_A之间Pkey_1和T
 
 **图. 5.17. false-positive 序列化异常示例**
 
-![Fig. 5.17. Scenario where false-positive serialization anomaly occurs.](http://www.interdb.jp/pg/img/fig-5-17.png)![img]()
+![Fig. 5.17. Scenario where false-positive serialization anomaly occurs.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-17.png?raw=true)
 
 当使用顺序扫描时，正如SIREAD锁的解释中所述，PostgreSQL创建一个relation级别的SIREAD锁。 图5.18(1)展示了PostgreSQL使用顺序扫描时的SIREAD锁和 rw-conflict。 在这种情况下，会创建与tbl的SIREAD锁相关的rw-conflict C1和C2，并在优先图中创建一个循环。 因此，检测到false-positive Write-Skew异常(即使没有冲突，Tx_A或Tx_B也会中止)。
 
 **图. 5.18. False-positive 异常 (1) – 使用顺序扫描**
 
-![Fig. 5.18. False-positive anomaly (1) – Using sequential scan.](http://www.interdb.jp/pg/img/fig-5-18.png)![img]()
+![Fig. 5.18. False-positive anomaly (1) – Using sequential scan.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-18.png?raw=true)
 
 即使使用索引扫描，如果事务Tx_A和Tx_B都获得相同的索引SIREAD锁，PostgreSQL将检测到 false-positive 异常。 图5.19给出了这种情况。 假设索引页Pkey_1包含两个索引项，其中一个指向Tuple_1，另一个指向Tuple_2。 当Tx_A和Tx_B执行相应的SELECT和UPDATE命令时，Pkey_1被Tx_A和Tx_B读写。 在这种情况下，两个与Pkey_1关联的 rw-conflict C1和C2在优先图中创建一个循环; 因此，检测到 false-positive Write-Skew 异常。 (如果Tx_A和Tx_B获取不同索引页的SIREAD锁，则不会检测到 false-positive，并且可以提交这两个事务。)
 
 **图. 5.19. False-positive 异常 (2) – 索引扫描使用相同的索引页**
 
-![Fig. 5.19. False-positive anomaly (2) – Index scan using the same index page.](http://www.interdb.jp/pg/img/fig-5-19.png)![img]()
+![Fig. 5.19. False-positive anomaly (2) – Index scan using the same index page.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-19.png?raw=true)
 
 ------
 
@@ -955,7 +955,7 @@ PostgreSQL的并发控制机制需要以下过程维护。
 
 **图. 5.20. Wraparound 问题**
 
-![Fig. 5.20. Wraparound problem.](http://www.interdb.jp/pg/img/fig-5-20.png)![img]()
+![Fig. 5.20. Wraparound problem.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-20.png?raw=true)
 
 为了解决这个问题，PostgreSQL引入了一个名为 *frozen txid* 的概念，并实现了  *FREEZE* 的过程。
 
@@ -969,7 +969,7 @@ freeze 处理由 vacuum 调用。 如果 t_xmin 值早于当前 txid 减去 [vac
 
 **图. 5.21. Freeze 处理**
 
-![Fig. 5.21. Freeze process.](http://www.interdb.jp/pg/img/fig-5-21.png)![img]()
+![Fig. 5.21. Freeze process.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch5/fig-5-21.png?raw=true)
 
 ## 参考
 
