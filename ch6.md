@@ -111,7 +111,7 @@ vacuum处理对指定的表或数据库中的所有表执行以下操作
 
 **图. 6.1. 清理一个dead tuple**
 
-![Fig. 6.1. Removing a dead tuple.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch6/fig-6-01.png?raw=true)
+![Fig. 6.1. Removing a dead tuple.](imgs/ch6/fig-6-01.png)
 
 假设该表包含三个page页。 我们专注于第0页(即第一页)。 这个页有三个元组。 Tuple_2是一个dead tuple(图6.1(1))。 在这种情况下，PostgreSQL清理Tuple_2并重新排序剩余的元组以整理碎片，然后更新此页面的FSM和VM(图6.1(2))。 PostgreSQL继续这个过程直到最后一页。
 
@@ -143,7 +143,7 @@ VM的基本概念很简单。 每个表都有一个单独的可见性映射表�
 
 **图 6.2. VMS使用示例**
 
-![Fig. 6.2. How the VM is used.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch6/fig-6-02.png?raw=true)
+![Fig. 6.2. How the VM is used.](imgs/ch6/fig-6-02.png)
 
 ```shell
 $ cd $PGDATA
@@ -185,7 +185,7 @@ OldestXminOldestXmin是当前正在运行的事务中最老的txid。例如，�
 
 **图. 6.3. 以 lazy 模式冻结元组**
 
-![Fig. 6.3. Freezing tuples in lazy mode.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch6/fig-6-03.png?raw=true)
+![Fig. 6.3. Freezing tuples in lazy mode.](imgs/ch6/fig-6-03.png)
 
 $0^{th}$ page:
 
@@ -219,7 +219,7 @@ eager模式弥补了lazy模式的缺陷。它扫描所有页以检查表中的�
 
 **图. 6.4. 以eager模式(版本9.5或更低版本)冻结旧元组**
 
-![Fig. 6.4. Freezing old tuples in eager mode (version 9.5 or earlier).](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch6/fig-6-04.png?raw=true)
+![Fig. 6.4. Freezing old tuples in eager mode (version 9.5 or earlier).](imgs/ch6/fig-6-04.png)
 
 $0^{th}$ page:
 
@@ -239,7 +239,7 @@ Tuple_10已被冻结。 Tuple_11没有。
 
 **图. 6.5. pg_database.datfrozenxid和pg_class.relfrozenxid(s)之间的关系**
 
-![Fig. 6.5. Relationship between pg_database.datfrozenxid and pg_class.relfrozenxid(s).](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch6/fig-6-05.png?raw=true)
+![Fig. 6.5. Relationship between pg_database.datfrozenxid and pg_class.relfrozenxid(s).](imgs/ch6/fig-6-05.png)
 
  
 
@@ -296,7 +296,7 @@ testdb=# SELECT datname, datfrozenxid FROM pg_database WHERE datname = 'testdb';
 
 **图. 6.6. 以eager模式冻结旧元组(版本9.6或更高版本)**
 
-![Fig. 6.6. Freezing old tuples in eager mode (version 9.6 or later).](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch6/fig-6-06.png?raw=true)
+![Fig. 6.6. Freezing old tuples in eager mode (version 9.6 or later).](imgs/ch6/fig-6-06.png)
 
 ## 6.4. 清理不需要的Clog文件
 
@@ -306,7 +306,7 @@ testdb=# SELECT datname, datfrozenxid FROM pg_database WHERE datname = 'testdb';
 
 **图. 6.7. 清理不必要的clog文件和页**
 
-![Fig. 6.7. Removing unnecessary clog files and pages.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch6/fig-6-07.png?raw=true)
+![Fig. 6.7. Removing unnecessary clog files and pages.](imgs/ch6/fig-6-07.png)
 
  
 
@@ -350,7 +350,7 @@ autovacuum守护进程定期调用几个autovacuum_worker进程。 默认情况�
 
 **图. 6.8. VACUUM(concurrent)缺点示例**
 
-![Fig. 6.8. An example showing the disadvantages of (concurrent) VACUUM.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch6/fig-6-08.png?raw=true)
+![Fig. 6.8. An example showing the disadvantages of (concurrent) VACUUM.](imgs/ch6/fig-6-08.png)
 
 ```sql
 testdb=# DELETE FROM tbl WHERE id % 6 != 0;
@@ -363,7 +363,7 @@ dead tuple被清理; 但是，表大小并未减少。 这既浪费磁盘空间�
 
 **图. 6.9. Full VACUUM 模式概述**
 
-![Fig. 6.9. Outline of Full VACUUM mode.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch6/fig-6-09.png?raw=true)
+![Fig. 6.9. Outline of Full VACUUM mode.](imgs/ch6/fig-6-09.png)
 
 [1]创建新表：图6.9(1)
 

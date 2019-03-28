@@ -18,7 +18,7 @@ PostgreSQL是一个具有多进程体系结构的C/S类型的关系数据库管�
 
 **图. 2.1. PostgreSQL进程体系结构**
 
-![Fig. 2.1. An example of the process architecture in PostgreSQL.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch2/fig-2-01.png?raw=true)
+![Fig. 2.1. An example of the process architecture in PostgreSQL.](imgs/ch2/fig-2-01.png)
 
 ------
 
@@ -82,7 +82,7 @@ PostgreSQL中的内存架构可以分为两大类：
 
 **图. 2.2. PostgreSQL内存架构**
 
-![Fig. 2.2. Memory architecture in PostgreSQL.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch2/fig-2-02.png?raw=true)
+![Fig. 2.2. Memory architecture in PostgreSQL.](imgs/ch2/fig-2-02.png)
 
 ### 2.2.1. 本地缓存(local memory)
 

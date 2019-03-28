@@ -27,7 +27,7 @@ Indexes:
 
 **图. 7.1. Update a row without HOT**
 
-![Fig. 7.1. Update a row without HOT](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch7/fig-7-01.png?raw=true)
+![Fig. 7.1. Update a row without HOT](imgs/ch7/fig-7-01.png)
 
 我们考虑如何在不使用HOT的情况下更新最后一个元组。
 
@@ -45,7 +45,7 @@ testdb=# UPDATE tbl SET data = 'B' WHERE id = 1000;
 
 **图. 7.2. Update a row with HOT**
 
-![Fig. 7.2. Update a row with HOT](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch7/fig-7-02.png?raw=true)
+![Fig. 7.2. Update a row with HOT](imgs/ch7/fig-7-02.png)
 
 例如，在这种情况下，分别将“Tuple_1”和“Tuple_2”设置为HEAP_HOT_UPDATED位和HEAP_ONLY_TUPLE位。
 
@@ -53,13 +53,13 @@ testdb=# UPDATE tbl SET data = 'B' WHERE id = 1000;
 
 **图. 7.3. HEAP_HOT_UPDATED and HEAP_ONLY_TUPLE bits**
 
-![Fig. 7.3. HEAP_HOT_UPDATED and HEAP_ONLY_TUPLE bits](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch7/fig-7-03.png?raw=true)
+![Fig. 7.3. HEAP_HOT_UPDATED and HEAP_ONLY_TUPLE bits](imgs/ch7/fig-7-03.png)
 
 在下面，描述了PostgreSQL在使用HOT更新元组之后使用索引扫描访问更新元组的方式。 参考图7.4(a)。
 
 **图. 7.4. 修剪行指针**
 
-![Fig. 7.4. Pruning of the line pointers](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch7/fig-7-04.png?raw=true)
+![Fig. 7.4. Pruning of the line pointers](imgs/ch7/fig-7-04.png)
 
 (1) 找到指向目标元组的索引元组。
 
@@ -89,7 +89,7 @@ testdb=# UPDATE tbl SET data = 'B' WHERE id = 1000;
 
 **图. 7.5. Defragmentation of the dead tuples**
 
-![Fig. 7.5. Defragmentation of the dead tuples](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch7/fig-7-05.png?raw=true)
+![Fig. 7.5. Defragmentation of the dead tuples](imgs/ch7/fig-7-05.png)
 
 请注意，碎片整理的成本低于正常VACUUM处理的成本，因为碎片整理不涉及删除索引元组。
 
@@ -107,7 +107,7 @@ testdb=# UPDATE tbl SET data = 'B' WHERE id = 1000;
 
 **图. 7.6. HOT不可用的情况**
 
-![Fig. 7.6. The Cases in which HOT is not available](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch7/fig-7-06.png?raw=true)
+![Fig. 7.6. The Cases in which HOT is not available](imgs/ch7/fig-7-06.png)
 
  
 
@@ -176,4 +176,4 @@ testdb=# SELECT id, name FROM tbl WHERE id BETWEEN 18 and 19;
 
 **图. 7.7. Index-Only Scans 如何执行**
 
-![Fig. 7.7. How Index-Only Scans performs](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch7/fig-7-07.png?raw=true)
+![Fig. 7.7. How Index-Only Scans performs](imgs/ch7/fig-7-07.png)

@@ -17,7 +17,7 @@
 
 **图. 1.1. 数据库集群的逻辑结构**
 
-![Fig. 1.1. Logical structure of a database cluster.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch1/fig-1-01.png?raw=true)
+![Fig. 1.1. Logical structure of a database cluster.](imgs/ch1/fig-1-01.png)
 
 PostgreSQL中的所有数据库对象都由各自的**对象标识符(OID)**进行内部管理，它们是无符号的4字节整数。 数据库对象和各个OID之间的关系存储在适当的[系统目录](http://www.postgresql.org/docs/current/static/catalogs.html)中，具体取决于对象的类型。 例如，数据库和堆表的OID分别存储在*pg_database*和*pg_class*中，因此您可以通过发出如下查询来找出想要知道的OID：
 
@@ -43,7 +43,7 @@ sampledb=# SELECT relname, oid FROM pg_class WHERE relname = 'sampletbl';
 
 **图 1.2. 数据库集群示例**
 
-![Fig. 1.2. An example of database cluster.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch1/fig-1-02.png?raw=true)
+![Fig. 1.2. An example of database cluster.](imgs/ch1/fig-1-02.png)
 
 在以下小节中，将描述数据库集群、数据库、与表和索引相关文件、表空间的结构。
 
@@ -171,7 +171,7 @@ PostgreSQL中的表空间是数据目录之外的附加数据区域。 该功能
 
 **Fig. 1.3. 数据库集群中的表空间**
 
-![Fig. 1.3. A Tablespace in the Database Cluster.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch1/fig-1-03.png?raw=true)
+![Fig. 1.3. A Tablespace in the Database Cluster.](imgs/ch1/fig-1-03.png)
 
 使用[CREATE TABLESPACE](http://www.postgresql.org/docs/current/static/sql-createtablespace.html)语句时指定的目录下会创建一个表空间，在该目录下将创建特定于版本的子目录（例如，PG_9.4_201409291）。 下面显示了特定于版本的命名方法。
 
@@ -222,7 +222,7 @@ page页的内部结构取决于数据文件类型。 在本节中，将描述表
 
 **图 1.4. 堆表文件的page页内部结构**
 
-![Fig. 1.4. Page layout of a heap table file.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch1/fig-1-04.png?raw=true)
+![Fig. 1.4. Page layout of a heap table file.](imgs/ch1/fig-1-04.png)
 
 表中的page页包含三种数据描述如下：
 
@@ -260,7 +260,7 @@ PageHeaderData结构在 [src/include/storage/bufpage.h](https://github.com/postg
 
 图 1.5. 写tuple
 
-![Fig. 1.5. Writing of a heap tuple.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch1/fig-1-05.png?raw=true)
+![Fig. 1.5. Writing of a heap tuple.](imgs/ch1/fig-1-05.png)
 
 ### 1.4.2. 读元组(Heap Tuples)
 
@@ -271,7 +271,7 @@ PageHeaderData结构在 [src/include/storage/bufpage.h](https://github.com/postg
 
 图. 1.6.  顺序扫描和索引扫描
 
-![Fig. 1.6. Sequential scan and index scan.](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch1/fig-1-06.png?raw=true)
+![Fig. 1.6. Sequential scan and index scan.](imgs/ch1/fig-1-06.png)
 
  PostgreSQL也支持TID扫描(TID-Scan)，[位图扫描](https://wiki.postgresql.org/wiki/Bitmap_Indexes)(Bitmap-Scan))和仅索引扫描(Index-Only-Scan)。
 
@@ -287,4 +287,4 @@ sampledb=# SELECT ctid, data FROM sampletbl WHERE ctid = '(0,1)';
 
 Index-Only-Scan将在第7章中详细介绍。
 
- 
+

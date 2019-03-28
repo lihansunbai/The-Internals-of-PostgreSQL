@@ -2,7 +2,7 @@
 
 ##### 针对数据库管理员和系统开发人员 
 
-![Copyright Diego Zazzeo](https://github.com/yonj1e/The-Internals-of-PostgreSQL/blob/master/imgs/ch0/puestas-fauna-mecanica-c.png?raw=true)
+![Copyright Diego Zazzeo](imgs/ch0/puestas-fauna-mecanica-c.png)
 
 ## 简介
 
